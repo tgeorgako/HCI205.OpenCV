@@ -9,6 +9,7 @@ import argparse
 import imutils
 import pickle
 import time
+import sys
 import cv2
 
 # construct the argument parser and parse the arguments
@@ -26,6 +27,10 @@ args = vars(ap.parse_args())
 # load the known faces and embeddings
 print("[INFO] loading encodings...")
 data = pickle.loads(open(args["encodings"], "rb").read())
+
+# time initialization
+t = time.localtime()
+current_time = time.strftime("%H:%M:%S", t)
 
 # initialize the video stream and pointer to output video file, then
 # allow the camera sensor to warm up
@@ -109,6 +114,13 @@ while True:
 	# faces t odisk
 	if writer is not None:
 		writer.write(frame)
+
+
+	#Create log
+	print("The system has recognised", names, "at", current_time)
+	log = open("Face_recognition_history.log", "a")
+	sys.stdout = log
+
 
 	# check to see if we are supposed to display the output frame to
 	# the screen
